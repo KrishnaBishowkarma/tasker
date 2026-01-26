@@ -23,6 +23,9 @@ public class TaskList {
     @Column(name = "description")
     private String description;
 
+    @OneToMany(mappedBy = "taskList", cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
+    private List<Task> tasks;
+
     @Column(name = "created", nullable = false)
     private LocalDateTime created;
 
@@ -36,13 +39,15 @@ public class TaskList {
 
     // All-arg Constructor
 
-    public TaskList(UUID id, String title, String description, LocalDateTime created, LocalDateTime updated) {
+    public TaskList(UUID id, String title, String description, List<Task> tasks, LocalDateTime created, LocalDateTime updated) {
         this.id = id;
         this.title = title;
         this.description = description;
+        this.tasks = tasks;
         this.created = created;
         this.updated = updated;
     }
+
 
     // Getters and Setters
 
@@ -70,6 +75,14 @@ public class TaskList {
         this.description = description;
     }
 
+    public List<Task> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
+    }
+
     public LocalDateTime getCreated() {
         return created;
     }
@@ -86,24 +99,33 @@ public class TaskList {
         this.updated = updated;
     }
 
+
     // Equals and hash code
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         TaskList taskList = (TaskList) o;
-        return Objects.equals(id, taskList.id) && Objects.equals(title, taskList.title) && Objects.equals(description, taskList.description) && Objects.equals(created, taskList.created) && Objects.equals(updated, taskList.updated);
+        return Objects.equals(id, taskList.id) && Objects.equals(title, taskList.title) && Objects.equals(description, taskList.description) && Objects.equals(tasks, taskList.tasks) && Objects.equals(created, taskList.created) && Objects.equals(updated, taskList.updated);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, description, created, updated);
+        return Objects.hash(id, title, description, tasks, created, updated);
     }
+
 
     // toString
 
     @Override
     public String toString() {
-        return "TaskList{" + "id=" + id + ", title='" + title + '\'' + ", description='" + description + '\'' + ", created=" + created + ", updated=" + updated + '}';
+        return "TaskList{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", tasks=" + tasks +
+                ", created=" + created +
+                ", updated=" + updated +
+                '}';
     }
 }

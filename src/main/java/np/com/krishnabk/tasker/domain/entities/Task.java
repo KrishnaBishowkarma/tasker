@@ -18,7 +18,6 @@ public class Task {
     @Column(name = "title", nullable = false)
     private String title;
 
-
     @Column(name = "description")
     private String description;
 
@@ -30,6 +29,10 @@ public class Task {
 
     @Column(name = "priority", nullable = false)
     private TaskPriority priority;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "task_list_id")
+    private TaskList taskList;
 
     @Column(name = "created", nullable = false)
     private LocalDateTime created;
@@ -43,13 +46,14 @@ public class Task {
 
     // All-arg Constructor
 
-    public Task(UUID id, String title, String description, LocalDateTime dueDate, TaskStatus stats, TaskPriority priority, LocalDateTime created, LocalDateTime updated) {
+    public Task(UUID id, String title, String description, LocalDateTime dueDate, TaskStatus stats, TaskPriority priority, TaskList taskList, LocalDateTime created, LocalDateTime updated) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
         this.stats = stats;
         this.priority = priority;
+        this.taskList = taskList;
         this.created = created;
         this.updated = updated;
     }
@@ -104,6 +108,14 @@ public class Task {
         this.priority = priority;
     }
 
+    public TaskList getTaskList() {
+        return taskList;
+    }
+
+    public void setTaskList(TaskList taskList) {
+        this.taskList = taskList;
+    }
+
     public LocalDateTime getCreated() {
         return created;
     }
@@ -131,10 +143,11 @@ public class Task {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, description, dueDate, stats, priority, created, updated);
+        return Objects.hash(id, title, description, dueDate, stats, priority, taskList, created, updated);
     }
 
     // toString
+
 
     @Override
     public String toString() {
@@ -145,6 +158,7 @@ public class Task {
                 ", dueDate=" + dueDate +
                 ", stats=" + stats +
                 ", priority=" + priority +
+                ", taskList=" + taskList +
                 ", created=" + created +
                 ", updated=" + updated +
                 '}';
