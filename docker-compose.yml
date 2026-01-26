@@ -1,0 +1,11 @@
+services:
+  db:
+    image: postgres:16
+    container_name: tasker-postgres
+    ports:
+      - "5432:5432"
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: supersecret
+      POSTGRES_DB: tasker_db
