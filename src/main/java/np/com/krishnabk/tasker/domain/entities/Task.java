@@ -25,7 +25,7 @@ public class Task {
     private LocalDateTime dueDate;
 
     @Column(name = "status", nullable = false)
-    private TaskStatus stats;
+    private TaskStatus status;
 
     @Column(name = "priority", nullable = false)
     private TaskPriority priority;
@@ -46,12 +46,21 @@ public class Task {
 
     // All-arg Constructor
 
-    public Task(UUID id, String title, String description, LocalDateTime dueDate, TaskStatus stats, TaskPriority priority, TaskList taskList, LocalDateTime created, LocalDateTime updated) {
+    public Task(
+            UUID id,
+            String title,
+            String description,
+            LocalDateTime dueDate,
+            TaskStatus status,
+            TaskPriority priority,
+            TaskList taskList,
+            LocalDateTime created,
+            LocalDateTime updated) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
-        this.stats = stats;
+        this.status = status;
         this.priority = priority;
         this.taskList = taskList;
         this.created = created;
@@ -92,12 +101,12 @@ public class Task {
         this.dueDate = dueDate;
     }
 
-    public TaskStatus getStats() {
-        return stats;
+    public TaskStatus getStatus() {
+        return status;
     }
 
-    public void setStats(TaskStatus stats) {
-        this.stats = stats;
+    public void setStatus(TaskStatus status) {
+        this.status = status;
     }
 
     public TaskPriority getPriority() {
@@ -138,12 +147,13 @@ public class Task {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return Objects.equals(id, task.id) && Objects.equals(title, task.title) && Objects.equals(description, task.description) && Objects.equals(dueDate, task.dueDate) && stats == task.stats && priority == task.priority && Objects.equals(created, task.created) && Objects.equals(updated, task.updated);
+        return Objects.equals(id, task.id) && Objects.equals(title, task.title) && Objects.equals(description,
+                task.description) && Objects.equals(dueDate, task.dueDate) && status == task.status && priority == task.priority && Objects.equals(created, task.created) && Objects.equals(updated, task.updated);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, description, dueDate, stats, priority, taskList, created, updated);
+        return Objects.hash(id, title, description, dueDate, status, priority, taskList, created, updated);
     }
 
     // toString
@@ -156,7 +166,7 @@ public class Task {
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", dueDate=" + dueDate +
-                ", stats=" + stats +
+                ", status=" + status +
                 ", priority=" + priority +
                 ", taskList=" + taskList +
                 ", created=" + created +
