@@ -46,9 +46,16 @@ public class Task {
 
     // All-arg Constructor
 
-    public Task(UUID id, String title, String description, LocalDateTime dueDate, TaskStatus status,
-                TaskPriority priority
-            , TaskList taskList, LocalDateTime created, LocalDateTime updated) {
+    public Task(
+            UUID id,
+            String title,
+            String description,
+            LocalDateTime dueDate,
+            TaskStatus status,
+            TaskPriority priority,
+            TaskList taskList,
+            LocalDateTime created,
+            LocalDateTime updated) {
         this.id = id;
         this.title = title;
         this.description = description;
