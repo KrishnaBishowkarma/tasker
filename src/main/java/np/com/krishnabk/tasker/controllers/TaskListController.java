@@ -1,11 +1,10 @@
 package np.com.krishnabk.tasker.controllers;
 
 import np.com.krishnabk.tasker.domain.dto.TaskListDto;
+import np.com.krishnabk.tasker.domain.entities.TaskList;
 import np.com.krishnabk.tasker.mappers.TaskListMapper;
 import np.com.krishnabk.tasker.services.TaskListService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,6 +26,14 @@ public class TaskListController {
                 .stream()
                 .map(taskListMapper::toDto)
                 .toList();
+    }
+
+    @PostMapping
+    public TaskListDto createTaskList(@RequestBody TaskListDto taskListDto) {
+        TaskList createdTaskList = taskListService.createTaskList(
+                taskListMapper.fromDto(taskListDto)
+        );
+        return taskListMapper.toDto(createdTaskList);
     }
 }
 
