@@ -1,5 +1,6 @@
 package np.com.krishnabk.tasker.services.impl;
 
+import jakarta.transaction.Transactional;
 import np.com.krishnabk.tasker.domain.entities.TaskList;
 import np.com.krishnabk.tasker.repositories.TaskListRepository;
 import np.com.krishnabk.tasker.services.TaskListService;
@@ -49,6 +50,7 @@ public class TaskListServiceImpl implements TaskListService {
         return taskListRepository.findById(id);
     }
 
+    @Transactional
     @Override
     public TaskList updateTaskList(UUID taskListId, TaskList taskList) {
         if(null == taskList.getId()){
