@@ -1,5 +1,6 @@
 package np.com.krishnabk.tasker.services.impl;
 
+import jakarta.transaction.Transactional;
 import np.com.krishnabk.tasker.domain.entities.Task;
 import np.com.krishnabk.tasker.domain.entities.TaskList;
 import np.com.krishnabk.tasker.domain.entities.TaskPriority;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import javax.swing.text.html.Option;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -31,6 +33,7 @@ public class TaskServiceImpl implements TaskService {
         return taskRepository.findByTaskListId(taskListId);
     }
 
+    @Transactional
     @Override
     public Task createTask(UUID taskListId, Task task) {
 
@@ -68,5 +71,42 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public Optional<Task> getTask(UUID taskListId, UUID taskId) {
         return taskRepository.findByTaskListIdAndId(taskListId, taskId);
+    }
+
+    @Transactional
+    @Override
+    public Task updateTask(UUID taskListId, UUID taskId, Task task) {
+        if (null == task.getId()){
+            throw new IllegalArgumentException("Task must have ID!");
+        }
+        if (!Objects.equals(taskId, task.getId())){
+            throw new IllegalArgumentException("Task IDs do not match");
+        }
+
+        if (null == task.getPriority()){
+            throw new IllegalArgumentException("Task must have a valid priority");
+        }
+
+        if (null == task.getStatus()){
+            throw new IllegalArgumentException("Task must have a valid status");
+        }
+
+        Task existingTask = taskRepository.findByTaskListIdAndId(taskListId, taskId)
+                .orElseThrow(() -> new IllegalArgumentException("Task not found!"));
+
+        existingTask.setTitle(task.getTitle());
+        existingTask.setDescription(task.getDescription());
+        existingTask.setDueDate(task.getDueDate());
+        existingTask.setPriority(task.getPriority());
+        existingTask.setStatus(task.getStatus());
+        existingTask.setUpdated(LocalDateTime.now());
+
+        return taskRepository.save(existingTask);
+    }
+
+    @Transactional
+    @Override
+    public void deleteTask(UUID taskListId, UUID taskId) {
+        taskRepository.deleteByTaskListIdAndId(taskListId, taskId);
     }
 }
